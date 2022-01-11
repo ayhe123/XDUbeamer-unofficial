@@ -1,0 +1,2 @@
+# XDUbeamer-unofficial
+仿照西安电子科技大学PPT模板自制的beamer模板
