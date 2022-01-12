@@ -1,0 +1,185 @@
+\NeedsTeXFormat{LaTeX2e}[2005/12/01]
+\ProvidesPackage{XDUbeamer}[2021/01/21 XDUbeamer v1.0]
+
+\mode<presentation>
+\usetheme{default} %定义主题
+
+\RequirePackage{babel}
+
+% 表格相关
+\RequirePackage{longtable,multirow,array}  % 各种基本的表格宏包
+\RequirePackage{booktabs}  % 三线表宏包
+\RequirePackage{tabularx}
+\RequirePackage{tabu}
+\RequirePackage{threeparttable}
+
+% 数学公式
+\RequirePackage{amsfonts,amsmath,amssymb} % AMS-LaTeX 符号、公式
+% 使用serif可以使得公式的样式变为常用latex的公式样式
+\usefonttheme[onlymath]{serif}
+
+% 画图
+\RequirePackage{graphicx}
+\RequirePackage{subfigure}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+
+% 以下定义了自动识别的图表文件夹
+% 若使用这些名字命名文件夹
+% 则引用图片路径时只需填文件名即可
+\graphicspath{{./}{./img/}{./fig/}{./image/}{./figure/}{./picture/}}
+
+\RequirePackage{url}  % 网址宏包，以下命令使得网址能自动换行
+\def\UrlBreaks{\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J
+\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V
+\do\W\do\X\do\Y\do\Z\do\[\do\\\do\]\do\^\do\_\do\`\do\a\do\b
+\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n
+\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z
+\do\.\do\@\do\\\do\/\do\!\do\_\do\|\do\;\do\>\do\]\do\)\do\,
+\do\?\do\'\do+\do\=\do\#}
+
+% 代码相关
+\RequirePackage{listings}
+\definecolor{grey}{rgb}{0.8,0.8,0.8}
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+\definecolor{darkblue}{rgb}{0,0,0.3}
+\def\lstbasicfont{\ttfamily\selectfont\footnotesize}
+\lstset{%
+frame=trbl,
+frameround = tttt,
+   numbers=left,
+   numberstyle=\tiny\sffamily,%
+    showstringspaces=false,
+    showspaces=false,%
+    tabsize=4,%
+    breaklines=true,%
+    % frame=lines,%
+    basicstyle={\footnotesize\lstbasicfont},%
+    keywordstyle=\color{blue},%
+    identifierstyle=,%
+    commentstyle=\itshape\color{teal},%\itshape,%
+    stringstyle=\color{violet},%
+    escapeinside=``,%
+    backgroundcolor=\color[RGB]{245,245,244},
+    framerule=1pt,
+    rulecolor=\color{gray!35},
+    backgroundcolor=\color{gray!5},
+}
+
+% 定义颜色
+\RequirePackage{color,xcolor}
+
+% 主题颜色作为参数传递进来, 可以选择红色(red)和蓝色(blue), 默认为红色
+\newif\if@useRedTheme
+\DeclareOption{red}{\@useRedThemetrue}
+\DeclareOption{blue}{\@useRedThemefalse}
+\ExecuteOptions{red}
+\ProcessOptions
+
+\if@useRedTheme
+\definecolor{main}{RGB}{175,33,37}
+\newcommand{\XDlogo}{logo_red.png}
+\else
+\definecolor{main}{RGB}{0,65,129}
+\newcommand{\XDlogo}{logo_blue.png}
+\fi
+\definecolor{cGrey}{RGB}{195,195,193}
+
+\colorlet{text}{black}
+% 不同元素指定不同颜色，fg是本身颜色，bg是背景颜色，!num!改变数值提供渐变色
+\setbeamercolor{title}{fg=black,bg=white}
+\setbeamercolor{subtitle}{fg=black,bg=white}
+\setbeamercolor{frametitle}{fg=white}
+\setbeamercolor{section in toc}{fg=main,bg=white}
+\setbeamercolor{caption name}{fg=black}
+\setbeamercolor{normal text}{fg=text}
+\setbeamercolor{enumerate item}{fg=main}
+\setbeamercolor{qed symbol}{fg=black}
+\setbeamercolor{math text}{fg=black}
+
+% 定理环境颜色
+\setbeamercolor{block title}{fg=main,bg=cGrey!50!white}
+\setbeamercolor{block body}{fg=black,bg=cGrey!30!white}
+
+%设置页边距
+\setbeamersize{text margin left=0.65cm, text margin right=0.65cm}
+
+% 画红(蓝)白相间的条纹
+\newcommand{\drawVerticalBar}[4]{
+    \begin{tikzpicture}
+        \coordinate (top) at (0,#1);
+        \coordinate (but) at (0,#2);
+        \foreach \y in {.2,.4,...,1}
+        \fill[main] ($(top)!\y!(but)$) rectangle ($(top)!\y!(but)+(#3,#4)$);
+    \end{tikzpicture}
+}
+
+% 设置格式
+% 目录标前面数字标号
+\setbeamertemplate{section in toc}[sections numbered]
+% 无序列表用实心点
+\setbeamertemplate{itemize item}{$\bullet$}
+
+% 每页标题
+\setbeamertemplate{frametitle}
+{
+    \vspace{-1cm}\hspace{\fill}
+    \usebeamerfont{title in head/foot}\insertframetitle
+}
+
+% 最上方的横条
+\setbeamertemplate{headline}
+{
+    \vspace{-1.4cm}
+    \drawVerticalBar{0}{-1.4}{.3}{-.15}
+    \includegraphics[width=.3\paperwidth]{\XDlogo}
+    \begin{tikzpicture}
+        \fill[main] (0,0) rectangle (10,-1.4);
+        \fill[cGrey] (0,-1.3) rectangle (10,-1.4);
+    \end{tikzpicture}
+}
+
+% 标题页
+\setbeamertemplate{title page}
+{
+    \includegraphics[width=.4\paperwidth]{\XDlogo}\par
+    \vspace{\fill}
+    \begin{columns}
+    \column{.2\paperwidth}
+    \drawVerticalBar{0}{2}{.4}{.2}
+    \column{.6\paperwidth}
+    \begin{center}
+        {\LARGE\inserttitle}\par
+        \vspace{.2cm}
+        \insertsubtitle\par
+        \vspace{.2cm}
+        \insertinstitute\par
+        \vspace{.2cm}
+        \insertauthor\par
+        \vspace{.2cm}
+        \insertdate\par
+    \end{center}
+    \column{.2\paperwidth} % 与左边对称, 使得标题居中
+    \end{columns}
+    \vspace{.1\paperheight}
+}
+
+\setbeamertemplate{section page}
+{
+    \begin{center}
+        {\LARGE\insertsection}
+    \end{center}
+}
+
+\setbeamertemplate{subsection page}
+{
+    \begin{center}
+        {\LARGE\insertsubsection}
+    \end{center}
+}
+
+% 去掉下面的导航条
+\setbeamertemplate{navigation symbols}{}
+
+% 定理环境设置为圆角
+\setbeamertemplate{blocks}[rounded]

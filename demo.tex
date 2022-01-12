@@ -1,0 +1,126 @@
+\documentclass{ctexbeamer}
+\usepackage[blue]{XDUbeamer}
+
+\title{XDUbeamer 使用示例}
+\subtitle{在这里输入副标题}
+\institute{在这里输入学院}
+\author{在这里输入名字}
+
+\begin{document}
+\begin{frame}[plain] % 标题页要加 [plain]
+    \titlepage
+\end{frame}
+\begin{frame}
+    \frametitle{目录}
+    \tableofcontents
+\end{frame}
+\begin{frame}[fragile] % 使用了 \verb 环境的页面要加 [fragile]
+    \frametitle{设置章节}
+    \begin{itemize}
+        \item 用 \verb|\section| 设置章, 加上 \verb|\frame{\sectionpage}| 使得标题单独成页.
+        \item 用 \verb|\subsection| 设置节, 加上 \verb|\frame{\subsectionpage}| 使得标题单独成页.
+        \item 暂时不支持其他标题单独成页.
+    \end{itemize}
+\end{frame}
+\section{第1章}
+\frame{\sectionpage}
+\subsection{第1节}
+\frame{\subsectionpage}
+\section{定理环境}
+\begin{frame}
+    \frametitle{定理环境}
+    \begin{definition}
+        \alert{定理环境} 包括定义, 定理, 证明等的环境.
+    \end{definition}\pause % 用 \pause 实现类似于PPT动画的功能
+    \begin{theorem}
+        这是一个定理.
+    \end{theorem}\pause
+    \begin{proof}
+        这是定理的证明.
+    \end{proof}\pause
+    \begin{example}
+        这是一个例子.
+    \end{example}
+\end{frame}
+\section{图像}
+\begin{frame}
+    \frametitle{插入图像}
+    浮动体没有序号.
+    \begin{figure}[htbp!]
+        \centering
+        \includegraphics[scale=.5]{img/logo_blue.png}
+        \caption{这是一张图片}
+    \end{figure}
+    \begin{figure}[htbp!]
+        \centering
+        \includegraphics[scale=.5]{img/logo_blue.png}
+        \caption{这还是一张图片}
+    \end{figure}
+\end{frame}
+\section{表格}
+\begin{frame}
+    \frametitle{排版表格}
+    \begin{table}
+        \centering
+        \begin{tabular}{*{7}{c}}
+          \toprule
+          \multirow{3}{*}{算法} & \multicolumn{6}{c}{数据集} \\
+          \cmidrule{2-7}
+          & \multicolumn{3}{c}{Iris} & \multicolumn{3}{c}{Sonar} \\
+          \cmidrule{2-7}
+          & 指标1 & 指标2 & 指标3 & 指标1 & 指标2 & 指标3 \\
+          \midrule
+          算法1 & 0.647 & 0.907 & 0.249 & 1.129 & 0.545 & 0.991 \\
+          算法2 & 0.647 & 0.903 & 0.255 & 1.289 & 0.589 & 0.974 \\
+          算法3 & 0.668 & 0.926 & 0.210 & 1.282 & 0.561 & 0.986 \\
+          算法4 & 0.678 & 0.919 & 0.223 & 1.281 & 0.554 & 0.988 \\
+          \bottomrule
+        \end{tabular}
+        \caption{两个数据集上的聚类结果}
+      \end{table}
+\end{frame}
+\section{排版公式}
+\begin{frame}
+    \frametitle{公式}
+    单行公式:
+    \[\operatorname{DTFT}[x(n)]=\sum\limits_{n=\infty}^{\infty}x(n)e^{-j\omega n}.\]
+
+    多行公式:
+    \begin{align*}
+        S' & =\dfrac{1}{N}(HXu)^TH(HXu) \\
+        & =\dfrac{1}{N}(u^TX^TH^T)HXu \\
+        & =\dfrac{1}{N}u^TX^THHXu \\
+        & =\dfrac{1}{N}u^TSu.
+    \end{align*}
+\end{frame}
+\section{排版源程序}
+\begin{frame}[fragile]
+    \frametitle{源程序}
+    用 \verb|lstlisting| 环境来排版源程序, 支持语法高亮:
+
+    \begin{lstlisting}[language=Python]
+def print_i(n):
+    for i in range(n):
+        print(i)
+    return
+
+print("开始打印")
+# print 10 times
+print_i(10)
+# print 100 times
+print_i(100)
+# print 1000 times
+print_i(1000)
+    \end{lstlisting}
+    \end{frame}
+\section{注意事项}
+\begin{frame}[fragile]
+    \frametitle{注意事项}
+    \begin{enumerate}
+        \item 建议使用 \verb|xelatex| 编译. 用 \verb|pdflatex| 编译可能会出错.
+        \item 页标题不要超过16个字, 否则不能正常显示.
+        \item 用 \verb|\framesubtitle| 给页设置副标题不会起作用.
+        \item 项目主页: \url{https://github.com/ayhe123/XDUbeamer-unofficial}
+    \end{enumerate}
+\end{frame}
+\end{document}
